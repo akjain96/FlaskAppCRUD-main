@@ -1,14 +1,12 @@
 from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
-from flask_ngrok import run_with_ngrok
-
+import pymysql
 
 app = Flask(__name__)
-run_with_ngrok(app)
 
 app.secret_key = "Secret Key"
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:root@localhost/crud"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:rootpasswordgiven@localhost/crud"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 
 db = SQLAlchemy(app)
@@ -61,5 +59,6 @@ def update():
     return(redirect(url_for('Index')))
 
 if __name__ == "__main__":
-    app.run()
+    db.create_all()
+    app.run(debug=True)
 
