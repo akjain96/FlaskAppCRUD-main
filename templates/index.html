@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+{% block title %} Basic CRUD Application {% endblock %} 
+
+{% block body %} 
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="jumbotron p-3"> 
+                <h2>Manage <b> People </b> <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addpeoplemodal"> Add new people </button></h2>
+                <br>
+                <!-- Code for Displaying Flash Message -->
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success alert-dismissible" role="alert">
+                                <button type="button" class="btn btn-danger close btn-sm" data-dismiss="alert" aria-label="close">X</button>
+                                <b>{{ message }}</b>
+                            </div>    
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <!-- Code for creating table -->
+                <table class = "table table-striped table-dark"> 
+                    <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Age</th>
+                          <th scope="col">Email ID</th>
+                          <th scope="col">Department</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    {% for row in people %}
+                    <tbody>
+                        <tr>
+                            <td>{{ row.id }}</td>
+                            <td>{{ row.name }}</td>
+                            <td>{{ row.age }}</td>
+                            <td>{{ row.emailID }}</td>
+                            <td>{{ row.department }}</td>
+                            <td>
+                                <a href="/update/{{ row.id }}" class="btn btn-warning" data-toggle="modal" data-target="#updatedata{{row.id}}">Update</a>
+                                <a href="" class="btn btn-danger" onclick= "return confirm('Do you really want to delete data?');" >Delete</a>
+                            </td>                        
+                    
+                    
+                    <!-- Modal to update data -->
+                            <div class="modal fade" id="updatedata{{row.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" id="updatedata" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Update Data</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                            
+                                        <div class="modal-body">
+                                            <form action="{{url_for('update')}}" method="POST">
+                                                <div class="form-group">
+                                                    <label>Name:</label>
+                                                    <input type="hidden"  name="id" value="{{row.id}}">
+                                                    <input type="text" class="form-control" name="name" value="{{row.name}}">
+                                                </div>
+      
+                                                <div class="form-group">
+                                                    <label>Age:</label>
+                                                    <input type="number" class="form-control" name="age" value="{{row.age}}">
+                                                </div>
+            
+                                                <div class="form-group">
+                                                    <label>Email ID:</label>
+                                                    <input type="email" class="form-control" name="emailID" value="{{row.emailID}}">
+                                                </div>
+      
+                                                <div class="form-group">
+                                                    <label>Department:</label>
+                                                    <input type="text" class="form-control" name="department" value="{{row.department}}">
+                                                </div>
+                          
+                                                <div class="form-group">
+                                                    <button class="btn btn-primary" type="submit">Update Data</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tr>
+                    </tbody>
+                    {% endfor %} 
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal to Insert New Data -->
+    <div class="modal fade" id="addpeoplemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Add People Data</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{url_for('Insert')}}" method="POST">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input type="hidden"  name="id" value="">
+                        <input type="text" class="form-control" name="name" value="">
+                    </div>
+
+                    <div class="form-group">
+                       <label>Age:</label>
+                       <input type="number" class="form-control" name="age" value="">
+                    </div>
+      
+                    <div class="form-group">
+                       <label>Email ID:</label>
+                       <input type="email" class="form-control" name="emailID" value="">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Department:</label>
+                        <input type="text" class="form-control" name="department" value="">
+                     </div>
+                    
+                    <div class="form-group">
+                       <button class="btn btn-primary" type="submit">Add New Data</button>
+                    </div>
+                 </form>
+      
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-->
+<script> 
+    function deleteData() {
+        confirm("Do you really want to delete data ?");
+    }
+</script>
+-->
+{% endblock %}
