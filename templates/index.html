@@ -44,12 +44,12 @@
                             <td>{{ row.department }}</td>
                             <td>
                                 <a href="/update/{{ row.id }}" class="btn btn-warning" data-toggle="modal" data-target="#updatedata{{row.id}}">Update</a>
-                                <a href="" class="btn btn-danger" onclick= "return confirm('Do you really want to delete data?');" >Delete</a>
+                                <a href="/delete/{{ row.id }}" class="btn btn-danger" onclick= "return confirm('Do you really want to delete data?');" >Delete</a>
                             </td>                        
                     
                     
                     <!-- Modal to update data -->
-                            <div class="modal fade" id="updatedata{{row.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal fade" id="updatedata{{ row.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" id="updatedata" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
