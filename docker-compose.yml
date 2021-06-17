@@ -4,13 +4,13 @@ services:
   web:
     build: .
     links:
-      - db
+      - mysqldb
     ports:
-      - '8000:5000'
+      - '5000:5000'
     networks:
       - default
 
-  db:
+  mysqldb:
     image: mysql:8.0
     ports:
       - "3306:3306"
@@ -21,3 +21,5 @@ services:
       MYSQL_DATABASE: crud
     networks:
       - default
+    cap_add:
+      - SYS_NICE

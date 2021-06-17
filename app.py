@@ -2,16 +2,26 @@ from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 import pymysql
 from flask_migrate import Migrate # importing our latest dependency
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
+load_dotenv()
 
-app.secret_key = "Secret Key"
+SQL_DIALECT_DRIVER = os.getenv("SQL_DIALECT_DRIVER")
+SQL_U_NAME = os.getenv("SQL_U_NAME")
+SQL_U_PASSWORD = os.getenv("SQL_U_PASSWORD")
+SQL_DB_ACCESS_INSTANCE_NAME_PORT = os.getenv("SQL_DB_ACCESS_INSTANCE_NAME_PORT")
+SQL_DB_NAME = os.getenv("SQL_DB_NAME")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://akhil:password@192.168.1.28/crud"
+app.secret_key = f"{SECRET_KEY}"
+
+app.config['SQLALCHEMY_DATABASE_URI'] = f"{SQL_DIALECT_DRIVER}://{SQL_U_NAME}:{SQL_U_PASSWORD}@{SQL_DB_ACCESS_INSTANCE_NAME_PORT}/{SQL_DB_NAME}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 
 db = SQLAlchemy(app)
-Migrate(app, db) # this exposes some new flask terminal commands to us!
+Migrate(app, db) 
 
 class Data(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -73,5 +83,5 @@ def delete(id):
 
 if __name__ == "__main__":
     db.create_all()
-    app.run(host="0.0.0.0",debug=True)
+    app.run(host="0.0.0.0", debug=True)
     
