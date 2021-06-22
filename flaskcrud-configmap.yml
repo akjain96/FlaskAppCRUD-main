@@ -1,0 +1,8 @@
+#Config Map that need to be defined
+kind: ConfigMap 
+apiVersion: v1 
+metadata:
+  name: flaskcrud-configmap 
+data:
+  database: #
+  database_uri: #

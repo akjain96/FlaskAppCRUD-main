@@ -6,23 +6,29 @@ from dotenv import load_dotenv
 import os
 
 app = Flask(__name__)
+
+#Load environment variable to file
 load_dotenv()
 
+#Import env.variable 
 SQL_DIALECT_DRIVER = os.getenv("SQL_DIALECT_DRIVER")
 SQL_U_NAME = os.getenv("SQL_U_NAME")
 SQL_U_PASSWORD = os.getenv("SQL_U_PASSWORD")
-SQL_DB_ACCESS_INSTANCE_NAME_PORT = os.getenv("SQL_DB_ACCESS_INSTANCE_NAME_PORT")
+#SQL_DB_ACCESS_INSTANCE_NAME_PORT = os.getenv("SQL_DB_ACCESS_INSTANCE_NAME_PORT")
 SQL_DB_NAME = os.getenv("SQL_DB_NAME")
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 app.secret_key = f"{SECRET_KEY}"
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f"{SQL_DIALECT_DRIVER}://{SQL_U_NAME}:{SQL_U_PASSWORD}@{SQL_DB_ACCESS_INSTANCE_NAME_PORT}/{SQL_DB_NAME}"
+#Configure SQL Database URL
+app.config['SQLALCHEMY_DATABASE_URI'] = f"{SQL_DIALECT_DRIVER}://{SQL_U_NAME}:{SQL_U_PASSWORD}@mysql/{SQL_DB_NAME}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 
 db = SQLAlchemy(app)
-Migrate(app, db) 
 
+migrate = Migrate(app, db) 
+
+#Make Database model through SQLAlchemyORM
 class Data(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
@@ -80,8 +86,7 @@ def delete(id):
         flash('Employee Data deleted Successfully')
         return redirect(url_for('Index'))
 
-
 if __name__ == "__main__":
-    db.create_all()
+    #db.create_all()
     app.run(host="0.0.0.0", debug=True)
     
