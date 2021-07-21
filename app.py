@@ -21,7 +21,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 app.secret_key = f"{SECRET_KEY}"
 
 #Configure SQL Database URL
-app.config['SQLALCHEMY_DATABASE_URI'] = f"{SQL_DIALECT_DRIVER}://{SQL_U_NAME}:{SQL_U_PASSWORD}@mysql/{SQL_DB_NAME}"
+app.config['SQLALCHEMY_DATABASE_URI'] = f"{SQL_DIALECT_DRIVER}://{SQL_U_NAME}:{SQL_U_PASSWORD}@mysqldb/{SQL_DB_NAME}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 
 db = SQLAlchemy(app)
